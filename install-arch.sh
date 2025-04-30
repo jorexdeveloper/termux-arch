@@ -210,13 +210,13 @@ SHASUM_CMD=md5sum
 TRUSTED_SHASUMS="$(
 	cat <<-EOF
 		50d193e062794e21026bd0e981311fa5  ArchLinuxARM-armv7-latest.tar.gz
-		        bdef3220a954dadacf03f18d18544204  ArchLinuxARM-aarch64-latest.tar.gz
+		bdef3220a954dadacf03f18d18544204  ArchLinuxARM-aarch64-latest.tar.gz
 	EOF
 )"
 
 ARCHIVE_STRIP_DIRS=0 # directories stripped by tar when extracting rootfs archive
 KERNEL_RELEASE="6.2.1-arch-linux-proot"
-BASE_URL="http://os.archlinuxarm.org/os/"
+BASE_URL="http://os.archlinuxarm.org/os"
 
 TERMUX_FILES_DIR="/data/data/com.termux/files"
 
