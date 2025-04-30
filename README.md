@@ -19,7 +19,7 @@
 	</a>
 	<a href="http://os.archlinuxarm.org/os">
 		<img
-			src="https://img.shields.io/badge/dynamic/json?label=RootFS%20status%20&query=$.status&url=https%3A%2F%2Fraw.githubusercontent.com%2Fjorexdeveloper%2Ftermux-arch%2Fmain%2Fstatus.json&color=lightgray&logo=linux&logoSize=auto&style=for-the-badge">
+			src="https://img.shields.io/badge/dynamic/json?label=RootFS%20status%20&query=$.status&url=https%3A%2F%2Fraw.githubusercontent.com%2Fjorexdeveloper%2Ftermux-arch%2Fmain%2Fstatus.json&color=lightgray&logo=archlinux&logoSize=auto&style=for-the-badge">
 	</a>
 </p>
 
@@ -159,7 +159,7 @@ Now all that's left is to log in to your newly installed system and start playin
 vncserver "${DISPLAY}"
 ```
 
-<!-- Use `vnc kill` to stop the VNC server and terminate the Desktop session. the Desktop. (See `vnc help` for more information.) -->
+<!-- Use `vnc kill` to stop the VNC server and terminate the Desktop session. the Desktop (See `vnc help` for more information). -->
 
 On the first run of the command above, you will be prompted for a **VNC password**. This is the password that will be used to securely connect to the VNC server in the VNC viewer app, so save it somewhere.
 
