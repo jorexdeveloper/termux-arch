@@ -155,7 +155,7 @@ post_config_actions() {
 	# Fix environment variables on login or su.
 	local fix="session  required  pam_env.so readenv=1"
 	for f in su su-l system-local-login system-remote-login; do
-		if [ -f "${ROOTFS_DIRECTORY}/etc/pam.d/${f}" ] && ! grep -q "${fix}" "${ROOTFS_DIRECTORY}/etc/pam.d/${f}" &>>"${LOG_FILE}"; then
+		if [ -f "${ROOTFS_DIRECTORY}/etc/pam.d/${f}" ] && ! grep -q "${fix}" "${ROOTFS_DIRECTORY}/etc/pam.d/${f}" >>"${LOG_FILE}" 2>&1; then
 			echo "${fix}" >>"${ROOTFS_DIRECTORY}/etc/pam.d/${f}"
 		fi
 	done
@@ -164,7 +164,7 @@ post_config_actions() {
 		msg -t "Hold on while I generate the locales for you."
 		# Enable at least en_US.UTF-8
 		sed -i -E 's/#[[:space:]]?(en_US.UTF-8[[:space:]]+UTF-8)/\1/g' "${ROOTFS_DIRECTORY}/etc/locale.gen"
-		if distro_exec locale-gen &>>"${LOG_FILE}"; then
+		if distro_exec locale-gen >>"${LOG_FILE}" 2>&1; then
 			msg -s "Done, the locales are ready!"
 		else
 			msg -e "Sorry, I failed to generate the locales."
@@ -172,14 +172,14 @@ post_config_actions() {
 	fi
 	# Initialize keyring
 	msg -t "Give me a few more seconds to set up the ${DISTRO_NAME} keyring."
-	if distro_exec /bin/pacman-key --init &>>"${LOG_FILE}" && distro_exec /bin/pacman-key --populate archlinuxarm &>>"${LOG_FILE}"; then
+	if distro_exec /bin/pacman-key --init >>"${LOG_FILE}" 2>&1 && distro_exec /bin/pacman-key --populate archlinuxarm >>"${LOG_FILE}" 2>&1; then
 		msg -s "Done, the ${DISTRO_NAME} keyring is ready for use!"
 	else
 		msg -e "Sorry, I failed to set up the ${DISTRO_NAME} keyring."
 	fi
 	# Remove uneeded kernel
 	msg -t "Lastly, some cleanups. You probably won't need the kernel."
-	if distro_exec /bin/pacman -Rnsc --noconfirm "linux-${new_sys_arch}" &>>"${LOG_FILE}" && distro_exec /bin/pacman -Scc --noconfirm &>>"${LOG_FILE}"; then
+	if distro_exec /bin/pacman -Rnsc --noconfirm "linux-${new_sys_arch}" >>"${LOG_FILE}" 2>&1 && distro_exec /bin/pacman -Scc --noconfirm >>"${LOG_FILE}" 2>&1; then
 		msg -s "Done, your system is as light as a feather!"
 	else
 		msg -e "Sorry, I failed to make the cleanups."
