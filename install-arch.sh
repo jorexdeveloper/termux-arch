@@ -256,7 +256,7 @@ DISTRO_NAME="Arch Linux ARM"
 PROGRAM_NAME="$(basename "${0}")"
 DISTRO_REPOSITORY="termux-arch"
 VERSION_NAME="latest"
-KERNEL_RELEASE="${DISTRO_NAME// /-}-${VERSION_NAME// /-}-proot"
+KERNEL_RELEASE="$(uname -r)"
 
 SHASUM_CMD=md5sum
 TRUSTED_SHASUMS="$(
