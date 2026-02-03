@@ -292,8 +292,8 @@ VERSION_NAME=latest
 SHASUM_CMD=md5sum
 TRUSTED_SHASUMS=$(
 	cat <<-EOF
-		530e8fe5c6dbb72f3632927aa49a6fb1  ArchLinuxARM-armv7-latest.tar.gz
-		db8db5386f3c6296cc8589ae17b82046  ArchLinuxARM-aarch64-latest.tar.gz
+		2a58cd7b4046b7b4c7e7eb140cb34c6e  ArchLinuxARM-armv7-latest.tar.gz
+		123a38175bcdd70d20e1136a035567b9  ArchLinuxARM-aarch64-latest.tar.gz
 	EOF
 )
 
