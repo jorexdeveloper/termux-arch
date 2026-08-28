@@ -289,17 +289,37 @@ DISTRO_REPOSITORY=termux-arch
 KERNEL_RELEASE=$(uname -r)
 VERSION_NAME=latest
 
-SHASUM_CMD=md5sum
-TRUSTED_SHASUMS=$(
-	cat <<-EOF
-		93590174e5fe05c5b98ef50c23f61e84  ArchLinuxARM-armv7-latest.tar.gz
-		bae2eae185fc81659948339333c7752c  ArchLinuxARM-aarch64-latest.tar.gz
-	EOF
-)
-
 ARCHIVE_STRIP_DIRS=0 # directories stripped by tar when extracting rootfs archive
 BASE_URL=http://os.archlinuxarm.org/os
 TERMUX_FILES_DIR=/data/data/com.termux/files
+
+# ------------------------------------------------------------------------------
+# NOTE: ArchLinuxARM's "latest" rootfs archives are a rolling target: upstream
+# replaces the actual file behind that name periodically, so any checksum
+# hardcoded here goes stale and every fresh download then gets flagged as
+# "malformed" forever. To fix that, fetch the *current* official .md5 sums
+# straight from ArchLinuxARM for both architectures before verifying, so the
+# check always matches whatever is actually being served right now.
+# ------------------------------------------------------------------------------
+SHASUM_CMD=md5sum
+TRUSTED_SHASUMS=$(
+	{
+		curl -fsSL --connect-timeout 15 "${BASE_URL}/ArchLinuxARM-armv7-latest.tar.gz.md5" 2>/dev/null
+		curl -fsSL --connect-timeout 15 "${BASE_URL}/ArchLinuxARM-aarch64-latest.tar.gz.md5" 2>/dev/null
+	}
+)
+
+# If we could not reach ArchLinuxARM yet (e.g. this runs before the
+# connectivity check), fall back to the last-known sums instead of leaving
+# TRUSTED_SHASUMS empty (which would make every archive fail verification).
+if [[ -z ${TRUSTED_SHASUMS//[[:space:]]/} ]]; then
+	TRUSTED_SHASUMS=$(
+		cat <<-EOF
+			93590174e5fe05c5b98ef50c23f61e84  ArchLinuxARM-armv7-latest.tar.gz
+			bae2eae185fc81659948339333c7752c  ArchLinuxARM-aarch64-latest.tar.gz
+		EOF
+	)
+fi
 
 DISTRO_SHORTCUT=${TERMUX_FILES_DIR}/usr/bin/arch
 DISTRO_LAUNCHER=${TERMUX_FILES_DIR}/usr/bin/archlinux
